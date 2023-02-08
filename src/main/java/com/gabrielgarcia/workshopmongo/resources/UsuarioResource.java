@@ -1,26 +1,29 @@
 package com.gabrielgarcia.workshopmongo.resources;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gabrielgarcia.workshopmongo.domain.Usuario;
+import com.gabrielgarcia.workshopmongo.dto.UsuarioDTO;
+import com.gabrielgarcia.workshopmongo.service.UsuarioService;
 
 @RestController
 @RequestMapping(value = "/usuarios")
 public class UsuarioResource {
 	
+	@Autowired
+	private UsuarioService servico;
+	
 	@GetMapping
-	public ResponseEntity<List<Usuario>> findAll(){
-		Usuario gabriel = new Usuario("1", "Gabriel Garcia", "gabriel@gmail.com");
-		Usuario ronaldinho = new Usuario("2", "Ronaldinho Gaúcho", "ronaldinho@gmail.com");
-		List<Usuario> list = new ArrayList<>();
-		list.addAll(Arrays.asList(gabriel, ronaldinho));
-		return ResponseEntity.ok().body(list);
+	public ResponseEntity<List<UsuarioDTO>> findAll(){
+		List<Usuario> list = servico.findAll();
+		List<UsuarioDTO> listDTO = list.stream().map(x -> new UsuarioDTO(x)).collect(Collectors.toList()); // Passando o Usuario para a sobrecarga do DTO
+		return ResponseEntity.ok().body(listDTO);
 	}
 }
