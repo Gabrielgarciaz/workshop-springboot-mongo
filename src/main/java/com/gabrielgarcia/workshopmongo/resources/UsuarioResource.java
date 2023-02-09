@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,5 +46,10 @@ public class UsuarioResource {
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri(); // Pega o endereço do novo objeto inserido
 		return ResponseEntity.created(uri).build(); // Created retorna o código 201(código de novo recurso) - com o cabecalho contendo o endereço uri
 	}
-
+	
+	@DeleteMapping(value = "/{id}")
+	public ResponseEntity<UsuarioDTO> deleteUsuario(@PathVariable String id){
+		servico.deleteUsuario(id);
+		return ResponseEntity.noContent().build(); // Resposta 204, código que não tem que retornar nada
+	}
 }

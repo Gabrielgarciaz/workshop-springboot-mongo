@@ -33,4 +33,9 @@ public class UsuarioService {
 	public Usuario fromDTO(UsuarioDTO objDTO) {
 		return new Usuario(objDTO.getId(), objDTO.getNome(),objDTO.getEmail());
 	}
+	
+	public void deleteUsuario(String id) {
+		findById(id); // Caso não encontrar o obj vai lançar a exceção que está no findbyId
+		repo.deleteById(id);
+	}
 }
