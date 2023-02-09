@@ -1,5 +1,6 @@
 package com.gabrielgarcia.workshopmongo.resources;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -7,8 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.gabrielgarcia.workshopmongo.domain.Usuario;
 import com.gabrielgarcia.workshopmongo.dto.UsuarioDTO;
@@ -33,6 +37,13 @@ public class UsuarioResource {
 		Usuario obj = servico.findById(id);
 		return ResponseEntity.ok().body(new UsuarioDTO(obj)); // Convertando o obj para UsuarioDTO
 	}
-
+	
+	@PostMapping
+	public ResponseEntity<Void> insertUsuario(@RequestBody UsuarioDTO objDTO){
+		Usuario obj = servico.fromDTO(objDTO); // Transforma o UsuarioDTO em Usuario 
+		obj = servico.insertUsuario(obj); // Insere o usuário
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri(); // Pega o endereço do novo objeto inserido
+		return ResponseEntity.created(uri).build(); // Created retorna o código 201(código de novo recurso) - com o cabecalho contendo o endereço uri
+	}
 
 }
