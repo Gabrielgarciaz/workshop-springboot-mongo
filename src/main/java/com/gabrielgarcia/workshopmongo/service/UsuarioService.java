@@ -38,4 +38,16 @@ public class UsuarioService {
 		findById(id); // Caso não encontrar o obj vai lançar a exceção que está no findbyId
 		repo.deleteById(id);
 	}
+	
+	public Usuario updateUsuario(Usuario obj) {
+		Usuario newObj = findById(obj.getId()); // Pegando usuario no banco de Dados
+		updateData(newObj, obj); // Responsável de passar os dados do obj para o new obj
+		return repo.save(newObj);
+		}
+	public Usuario updateData(Usuario newObj, Usuario obj) { 
+		newObj.setEmail(obj.getEmail());
+		newObj.setId(obj.getId());
+		newObj.setNome(obj.getNome());
+		return newObj;
+	}
 }

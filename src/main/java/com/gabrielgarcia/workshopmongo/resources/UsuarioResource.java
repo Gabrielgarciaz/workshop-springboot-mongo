@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -51,5 +52,13 @@ public class UsuarioResource {
 	public ResponseEntity<UsuarioDTO> deleteUsuario(@PathVariable String id){
 		servico.deleteUsuario(id);
 		return ResponseEntity.noContent().build(); // Resposta 204, código que não tem que retornar nada
+	}
+	
+	@PutMapping(value = "/{id}")
+	public ResponseEntity<UsuarioDTO> updateUsuario(@RequestBody UsuarioDTO objDTO, @PathVariable String id){
+		Usuario obj = servico.fromDTO(objDTO);  // Transforma o UsuarioDTO em Usuario 
+		obj.setId(id);
+		obj = servico.updateUsuario(obj);
+		return ResponseEntity.noContent().build();
 	}
 }
