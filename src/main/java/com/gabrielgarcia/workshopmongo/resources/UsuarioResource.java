@@ -1,6 +1,7 @@
 package com.gabrielgarcia.workshopmongo.resources;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.gabrielgarcia.workshopmongo.domain.Post;
 import com.gabrielgarcia.workshopmongo.domain.Usuario;
 import com.gabrielgarcia.workshopmongo.dto.UsuarioDTO;
 import com.gabrielgarcia.workshopmongo.service.UsuarioService;
@@ -38,6 +40,11 @@ public class UsuarioResource {
 	public ResponseEntity<UsuarioDTO> findById(@PathVariable String id){
 		Usuario obj = servico.findById(id);
 		return ResponseEntity.ok().body(new UsuarioDTO(obj)); // Convertando o obj para UsuarioDTO
+	}
+	@GetMapping(value = "/{id}/posts")
+	public ResponseEntity<List<Post>> findPosts(@PathVariable String id){
+		Usuario obj = servico.findById(id);
+		return ResponseEntity.ok().body(obj.getPosts());
 	}
 	
 	@PostMapping
