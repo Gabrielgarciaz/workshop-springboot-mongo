@@ -1,9 +1,12 @@
 package com.gabrielgarcia.workshopmongo.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "usuario") // Declarando que vai ser uma coleção no MongoDb
@@ -14,6 +17,9 @@ public class Usuario implements Serializable {
 	private String id;
 	private String nome;
 	private String email;
+	
+	@DBRef(lazy = true) // Referência no db para aparecer os Posts no documento de Usuario ---- lazy para só carregar se explicitamente acessa-los 
+	private List<Post> posts = new ArrayList<>();
 	
 	public Usuario(){}
 	
@@ -46,7 +52,15 @@ public class Usuario implements Serializable {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	
+	public List<Post> getPosts() {
+		return posts;
+	}
 
+	public void setPosts(List<Post> posts) {
+		this.posts = posts;
+	}
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
@@ -68,4 +82,6 @@ public class Usuario implements Serializable {
 	public String toString() {
 		return "Usuario [id=" + id + ", nome=" + nome + ", email=" + email + "]";
 	}
+
+	
 }
