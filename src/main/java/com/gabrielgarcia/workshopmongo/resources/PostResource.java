@@ -1,5 +1,6 @@
 package com.gabrielgarcia.workshopmongo.resources;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,20 @@ public class PostResource {
 		return ResponseEntity.ok().body(lista);
 	}
 	
-	
+	@GetMapping(value = "/procurarcompleto")
+	public ResponseEntity<List<Post>> findFull(
+			@RequestParam(value = "texto", defaultValue = "") String texto, 
+			@RequestParam(value = "texto", defaultValue = "") String minData, 
+			@RequestParam(value = "texto", defaultValue = "") String maxData){ 										// Se nenhum texto for informado vai colocar uma String vazia nele
+		
+		texto = URL.decodeParam(texto);
+		Date min = URL.convertDate(minData, new Date(0L));
+		Date max = URL.convertDate(maxData, new Date(0L));
+		
+		List<Post> lista = servico.fullSearch(texto, min, max);
+		
+		return ResponseEntity.ok().body(lista);
+	}
 	
 	
 	

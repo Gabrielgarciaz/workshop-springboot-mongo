@@ -1,5 +1,6 @@
 package com.gabrielgarcia.workshopmongo.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,5 +24,12 @@ public class PostService {
 	
 	public List<Post> findByTitulo(String texto){
 		return repo.findByTitulo(texto);
+	}
+	
+	public List<Post> fullSearch(String texto, Date minData, Date maxData){
+		
+		maxData = new Date(maxData.getTime() + 24 * 60 * 60 * 1000); // Aumentando 1 dia no maxData
+		
+		return repo.fullSearch(texto, minData, maxData);
 	}
 }
